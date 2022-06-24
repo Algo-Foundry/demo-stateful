@@ -1,4 +1,4 @@
-# Statelful Smart Contract Demo
+# Stateful Smart Contract Demo
 This repository contains sample codes for a counter application. This application is created using a stateful smart contract.
 
 The application is first deployed to the blockchain. After which we will call the application to increment the counter. The application will then be deleted after.
