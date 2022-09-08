@@ -39,32 +39,34 @@ const submitToNetwork = async (signedTxn) => {
 
 const readGlobalState = async (appId) => {
   const app = await algodClient.getApplicationByID(appId).do();
-  
+
   // global state is a key value array
   const globalState = app.params["global-state"];
-  const formattedGlobalState = globalState.map(item => {
+  const formattedGlobalState = globalState.map((item) => {
     // decode from base64 and utf8
     const formattedKey = decodeURIComponent(Buffer.from(item.key, "base64"));
 
     let formattedValue;
     if (item.value.type === 1) {
       if (formattedKey === "voted") {
-        formattedValue = decodeURIComponent(Buffer.from(item.value.bytes, "base64"));
+        formattedValue = decodeURIComponent(
+          Buffer.from(item.value.bytes, "base64")
+        );
       } else {
         formattedValue = item.value.bytes;
       }
     } else {
       formattedValue = item.value.uint;
     }
-    
+
     return {
       key: formattedKey,
-      value: formattedValue
-    }
+      value: formattedValue,
+    };
   });
 
   console.log(formattedGlobalState);
-}
+};
 
 const callApp = async (account, appId, appArgs) => {
   // get suggested params
@@ -82,7 +84,7 @@ const callApp = async (account, appId, appArgs) => {
   const confirmedTxn = await submitToNetwork(signedCalledTxn);
 
   return confirmedTxn;
-}
+};
 
 const deleteApp = async (account, appId) => {
   // get suggested params
@@ -99,7 +101,7 @@ const deleteApp = async (account, appId) => {
   const confirmedTxn = await submitToNetwork(signedDeleteTxn);
 
   return confirmedTxn;
-}
+};
 
 (async () => {
   const sender = algosdk.mnemonicToSecretKey(process.env.MNEMONIC_CREATOR);
@@ -134,7 +136,7 @@ const deleteApp = async (account, appId) => {
 
   const signedCreateTxn = createTxn.signTxn(sender.sk);
   const confirmedTxn = await submitToNetwork(signedCreateTxn);
-  
+
   // read global state
   const appId = confirmedTxn["application-index"];
   console.log("App ID:", appId);
@@ -151,14 +153,13 @@ const deleteApp = async (account, appId) => {
 
     // call application to deduct counter
     let deductAppArgs = [];
-    addAppArgs.push(new Uint8Array(Buffer.from("Deduct")));
+    deductAppArgs.push(new Uint8Array(Buffer.from("Deduct")));
     await callApp(sender, appId, deductAppArgs);
 
     // read global state
     await readGlobalState(appId);
   } catch (error) {
     console.log(error.response.text);
-
   } finally {
     // delete app
     await deleteApp(sender, appId);
