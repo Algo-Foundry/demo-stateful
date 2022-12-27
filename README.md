@@ -12,7 +12,7 @@ The application is built and deployed without Algo Builder.
 npm install
 ```
 
-### Update environement variables
+### Update environment variables
 1. Copy `.env.example` to `.env`.
 2. Update Algorand Sandbox credentials in `.env` file.
 3. Run `source .env` in the project directory

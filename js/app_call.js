@@ -151,7 +151,7 @@ const deleteApp = async (account, appId) => {
 
     // call application to deduct counter
     let deductAppArgs = [];
-    addAppArgs.push(new Uint8Array(Buffer.from("Deduct")));
+    deductAppArgs.push(new Uint8Array(Buffer.from("Deduct")));
     await callApp(sender, appId, deductAppArgs);
 
     // read global state
