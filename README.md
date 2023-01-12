@@ -9,7 +9,7 @@ The application is built and deployed without Algo Builder.
 
 ### Install packages
 ```
-npm install
+yarn install
 ```
 
 ### Update environment variables
