@@ -48,13 +48,7 @@ const readGlobalState = async (appId) => {
 
     let formattedValue;
     if (item.value.type === 1) {
-      if (formattedKey === "voted") {
-        formattedValue = decodeURIComponent(
-          Buffer.from(item.value.bytes, "base64")
-        );
-      } else {
-        formattedValue = item.value.bytes;
-      }
+      formattedValue = item.value.bytes;
     } else {
       formattedValue = item.value.uint;
     }
